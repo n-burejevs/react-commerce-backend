@@ -19,9 +19,9 @@ error_reporting(E_ALL);
     $user_pw_in_db = "";
 
     $user_name = $user_lastname = $user_email = $user_id  = "";
-
+        
          if ($request_data !== null) 
-       {
+       {//check user
         $email = isset($request_data['email']) ? $request_data['email'] : null;
         $password = isset($request_data['password']) ? $request_data['password'] : null;
        // $response = array('message' => 'Data received!', 'data' => $request_data);
@@ -30,7 +30,7 @@ error_reporting(E_ALL);
         if ($email !=null && $password !=null)
     {
          // Create connection
-        $conn = new mysqli($servername, $username, $password, $dbname);
+        $conn = new mysqli($servername, $username, $db_password, $dbname);
         
        // Check connection
         if ($conn->connect_error)

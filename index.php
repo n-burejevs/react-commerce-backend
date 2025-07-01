@@ -55,7 +55,7 @@ $nameErr = $lastnameErr = $emailErr = "";
     {
         
          // Create connection
-        try {$conn = new mysqli($servername, $username, $password, $dbname);}
+        try {$conn = new mysqli($servername, $username, $db_password, $dbname);}
         catch(mysqli_sql_exception $e) 
         { echo json_encode(['status' => 'error', 'message' => "Connection failed: " . $e]);  
           exit();}

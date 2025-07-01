@@ -2,5 +2,5 @@
 
 $servername = "localhost";
 $username = "root";
-$password = "12345678";
+$db_password = "12345678";
 $dbname = "react-commerce";
