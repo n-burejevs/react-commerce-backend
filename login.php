@@ -25,15 +25,6 @@ error_reporting(E_ALL);
 
         if ($email !=null && $password !=null)
     {
-         // Create connection
-        $conn = new mysqli($servername, $username, $db_password, $dbname);
-        
-       // Check connection
-        if ($conn->connect_error)
-        {
-         echo json_encode(['status' => 'error', 'message' => "Connection failed: " . $conn->connect_error]);
-         exit();
-        }
         
         
           //find the user

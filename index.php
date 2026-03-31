@@ -47,20 +47,7 @@ $nameErr = $lastnameErr = $emailErr = "";
     }
 
         if ($firstname !=null && $lastname !=null && $email !=null && $password !=null)
-    {
-        
-         // Create connection
-        try {$conn = new mysqli($servername, $username, $db_password, $dbname);}
-        catch(mysqli_sql_exception $e) 
-        { echo json_encode(['status' => 'error', 'message' => "Connection failed: " . $e]);  
-          exit();}
-        
-       // Check connection
-        if ($conn->connect_error)
-        {
-         echo json_encode(['status' => 'error', 'message' => "Connection failed: " . $conn->connect_error]);
-         exit();
-        }
+    {        
           //check if the same email exist
           $check_uniq_email = "SELECT email FROM users WHERE email = '$email'";
 

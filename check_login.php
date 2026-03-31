@@ -22,15 +22,6 @@ if ($request_data !== null)
         
     if ($token !=null)
     {
-         // Create connection
-        $conn = new mysqli($servername, $username, $db_password, $dbname);
-        
-       // Check connection
-        if ($conn->connect_error)
-        {   //Cant authenticate, error 
-         echo json_encode(['status' => "error" . $conn->connect_error, 'message' => '']);
-         exit();
-        }
         
         
           //find the user

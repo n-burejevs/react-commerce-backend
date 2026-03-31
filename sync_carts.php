@@ -18,15 +18,6 @@ if ($request_data !== null)
          
     if ($user_token !=null)
     {
-         // Create connection
-        $conn = new mysqli($servername, $username, $db_password, $dbname);
-        
-       // Check connection
-        if ($conn->connect_error)
-        {   //Cant authenticate, error 
-         echo json_encode(['status' => "error", 'message' => $conn->connect_error]);
-         exit();
-        }
         
           //find users cart and wishlist
        $find_carts_wishlists = "SELECT cart_items, wished_items FROM user_carts JOIN users on user_carts.user_id=users.id WHERE token = '$user_token'";

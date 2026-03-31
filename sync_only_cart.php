@@ -25,13 +25,6 @@ if ($request_data !== null)
          //  $wishlist_json = json_encode($wishlist);
             $cart_items_json = json_encode($cart_items);
         
-         $conn = new mysqli($servername, $username, $db_password, $dbname);
-         
-        if ($conn->connect_error)
-        {   //Cant authenticate, error 
-         echo json_encode(['status' => "Error", 'message' => $conn->connect_error]);
-         exit();
-        }
        $find_user_id = "SELECT id FROM users WHERE token = '$user_token'";
        
                $ask_for_user_id = $conn->query($find_user_id);

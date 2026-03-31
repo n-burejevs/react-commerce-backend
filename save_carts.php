@@ -20,20 +20,21 @@ if ($request_data !== null)
        
     if ($cart_items !=null && $wishlist !=null && $user_token !=null)
     {
-        //mysql cant store php array, also storing "arrays" is bad?
+        //mysql cant store php array, also storing "arrays" is bad? my answer: db has json type, prob. should have used that one???
         //better solution would be to have only ids saved, maybe one user would have many records there, with each item id
         //or a string of id's
         //also have two tables for each "list" instead of one
            $wishlist_json = json_encode($wishlist);
             $cart_items_json = json_encode($cart_items);
         
-         $conn = new mysqli($servername, $username, $db_password, $dbname);
+       /*  $conn = new mysqli($servername, $username, $db_password, $dbname);
          
         if ($conn->connect_error)
         {   //Cant authenticate, error 
          echo json_encode(['status' => "Error", 'message' => $conn->connect_error]);
          exit();
-        }
+        } */
+        
        $find_user_id = "SELECT id FROM users WHERE token = '$user_token'";
        
                $ask_for_user_id = $conn->query($find_user_id);
