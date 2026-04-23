@@ -2,9 +2,6 @@
 require("db_config.php");
 require ("headers.php");
 
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
   
 $json_data = file_get_contents('php://input');
 
@@ -18,46 +15,32 @@ if ($request_data !== null)
         $wishlist = isset($request_data['wish_list']) ? $request_data['wish_list'] : null; 
             $user_token = isset($request_data['user_token']) ? $request_data['user_token'] : null;
        
-    if ($wishlist !=null && $user_token !=null)
-    {
-        
-           $wishlist_json = json_encode($wishlist);
-           // $cart_items_json = json_encode($cart_items);
+  if ($wishlist !=null && $user_token !=null)
+  {
+      $wishlist_json = json_encode($wishlist);
+      // $cart_items_json = json_encode($cart_items);
         
        $find_user_id = "SELECT id FROM users WHERE token = '$user_token'";
        
-               $ask_for_user_id = $conn->query($find_user_id);
+        $ask_for_user_id = $conn->query($find_user_id);
         
-        if ($ask_for_user_id->num_rows > 0)
+    if ($ask_for_user_id->num_rows > 0)
         {
            while($row = $ask_for_user_id->fetch_assoc())
            {
                $user_id = $row['id'];
-           }       
-        }
-         else {
-                  echo json_encode(['status'=> 'Error', 'message'=> 'cant find the user, cant proced']);
-                   exit();
-              }
-              
-              
-        
-        $save_items="INSERT INTO user_carts (user_id, wished_items) VALUES ('$user_id', '$wishlist_json')";
-        
-        $update_carts="UPDATE user_carts SET wished_items ='$wishlist_json' WHERE user_id='$user_id'";
-        
-        $carts_exist_already = "SELECT * FROM user_carts WHERE user_id='$user_id'";
-     
-        
-        
+           }
+           
+            $save_items="INSERT INTO user_carts (user_id, wished_items) VALUES ('$user_id', '$wishlist_json')";
+            
+            $update_carts="UPDATE user_carts SET wished_items ='$wishlist_json' WHERE user_id='$user_id'";
+            
+            $carts_exist_already = "SELECT * FROM user_carts WHERE user_id='$user_id'";
         
         $check_if_carts_ex = $conn->query($carts_exist_already);
         if ($check_if_carts_ex->num_rows > 0)
         {
-             //update if exists
-                if ($conn->connect_error) {
-                        die("Connection failed: " . $conn->connect_error);
-                    }
+                     //update if exists
                 if ($conn->query($update_carts) === true)
                 {
                   echo json_encode(['status' => "Success", 'message' => "Record updated successfully"]);
@@ -77,19 +60,14 @@ if ($request_data !== null)
             {
                 echo json_encode(['status' => "Error", 'message' => "Could not able to execute"]);
             }
-         }     
-        
-        
-       
-                  //echo json_encode(['status'=> 'Error', 'message'=> 'sth went wrong']);
-                 
-        
-        
-
-        
-         $conn->close();
-    }
-    else 
+         }  
+        }
+         else {
+                  echo json_encode(['status'=> 'Error', 'message'=> 'cant find the user, cant proced']);
+              }
+              
+  }
+  else 
     { //no request was sent?
         echo json_encode(['status'=> "Error", 'message'=> 'nothing requested?']);
     }
@@ -101,4 +79,4 @@ if ($request_data !== null)
         $error_response = ['status' => 'Error', 'message' => "Bad Request"];
         echo json_encode($error_response);
       }
-     
+$conn->close();

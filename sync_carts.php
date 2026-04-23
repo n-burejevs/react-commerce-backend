@@ -43,7 +43,6 @@ if ($request_data !== null)
               }
               
                
-              $conn->close(); 
     }
     else 
     { //no request was sent?
@@ -60,3 +59,4 @@ if ($request_data !== null)
         echo json_encode($error_response);
       }
       
+ $conn->close(); 

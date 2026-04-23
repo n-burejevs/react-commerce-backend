@@ -2,9 +2,6 @@
 require("db_config.php");
 require ("headers.php");
 
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
   
 $json_data = file_get_contents('php://input');
 
@@ -34,15 +31,9 @@ if ($request_data !== null)
            while($row = $ask_for_user_id->fetch_assoc())
            {
                $user_id = $row['id'];
-           }       
-        }
-         else {
-                  echo json_encode(['status'=> 'Error', 'message'=> 'cant find the user, cant proced']);
-                   exit();
-              }
-              
-              
-        
+           }    
+           
+                   
         $save_items="INSERT INTO user_carts (user_id, cart_items) VALUES ('$user_id', '$cart_items_json')";
         
         $update_carts="UPDATE user_carts SET cart_items='$cart_items_json' WHERE user_id='$user_id'";
@@ -50,15 +41,10 @@ if ($request_data !== null)
         $carts_exist_already = "SELECT * FROM user_carts WHERE user_id='$user_id'";
      
         
-        
-        
         $check_if_carts_ex = $conn->query($carts_exist_already);
         if ($check_if_carts_ex->num_rows > 0)
         {
-             //update if exists
-                if ($conn->connect_error) {
-                        die("Connection failed: " . $conn->connect_error);
-                    }
+                        //update if exists
                 if ($conn->query($update_carts) === true)
                 {
                   echo json_encode(['status' => "Success", 'message' => "Record updated successfully"]);
@@ -78,17 +64,15 @@ if ($request_data !== null)
             {
                 echo json_encode(['status' => "Error", 'message' => "Could not able to execute"]);
             }
-         }     
-        
-        
+         }    
+
+        }
+         else {
+                  echo json_encode(['status'=> 'Error', 'message'=> 'cant find the user, cant proced']);
+              } 
        
                   //echo json_encode(['status'=> 'Error', 'message'=> 'sth went wrong']);
                  
-        
-        
-
-        
-         $conn->close();
     }
     else 
     { //no request was sent?
@@ -102,4 +86,5 @@ if ($request_data !== null)
         $error_response = ['status' => 'Error', 'message' => "Bad Request"];
         echo json_encode($error_response);
       }
-     
+      
+$conn->close();

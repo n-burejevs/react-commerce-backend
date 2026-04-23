@@ -2,13 +2,9 @@
 require("db_config.php");
 require ("headers.php");
 
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
-
 //Processing input from Sign up form
 
-$nameErr = $lastnameErr = $emailErr = "";
+$nameErr = $lastnameErr = $emailErr = $passErr = "";
 
    // 1. Get the raw JSON data from the request body
     $json_data = file_get_contents('php://input');
@@ -23,26 +19,32 @@ $nameErr = $lastnameErr = $emailErr = "";
         $lastname = isset($request_data['lastname']) ? $request_data['lastname'] : null;
         $email = isset($request_data['email']) ? $request_data['email'] : null;
         $password = isset($request_data['password']) ? $request_data['password'] : null;
-        $response = array('message' => 'Data received!', 'data' => $request_data);
+        //$response = array('message' => 'Data received!', 'data' => $request_data);
         //var_dump($response);
 
-              if (!preg_match("/^[a-zA-Z0-9 ]*$/",$firstname)) 
+              if (!preg_match("/^[a-zA-Z0-9_\-]{3,16}$/",$firstname)) 
               {
-                 $nameErr = "Only letters, numbers and white space allowed";
+                 $nameErr = "Only letters and numbers allowed";
               }
-             if (!preg_match("/^[a-zA-Z0-9 ]*$/",$lastname))
+             if (!preg_match("/^[a-zA-Z0-9_\-]{3,16}$/",$lastname))
              {
-                $lastnameErr = "Only letters, numbers and white space allowed";
+                $lastnameErr = "Only letters, numbers allowed";
              }
               if (!filter_var($email, FILTER_VALIDATE_EMAIL))
               {
                 $emailErr = "Invalid email format";
               }
-    //check password?
+              //remove tags and quote chars
+              $password = filter_string_polyfill($password);
+              // Check if password is at least 8 characters
+              if (strlen($password) < 8) {
+                 $passErr = "Password too short!";
+}
 
-    if ($nameErr != "" || $lastnameErr != "" || $emailErr != "") {
+
+    if ($nameErr != "" || $lastnameErr != "" || $emailErr != "" || $passErr != "") {
         //there were errors
-      echo json_encode(['status' => 'error', 'message' =>  $emailErr." ". $lastnameErr." ". $nameErr]);
+      echo json_encode(['status' => 'error', 'message' =>  $emailErr+" "+$lastnameErr." "+$nameErr+" "+$passErr]);
       exit();
     }
 
@@ -59,7 +61,7 @@ $nameErr = $lastnameErr = $emailErr = "";
         }
         else 
         {
-            $secure_pass = password_hash($password, PASSWORD_BCRYPT);
+            $secure_pass = password_hash($password, PASSWORD_DEFAULT);
 
             $sql = "INSERT INTO users (firstname, lastname, email, password) VALUES ( '$firstname', '$lastname', '$email', '$secure_pass')";
 
@@ -72,7 +74,7 @@ $nameErr = $lastnameErr = $emailErr = "";
           }
 
         }
-        $conn->close();
+       
     }
         
 } else
@@ -82,3 +84,12 @@ $nameErr = $lastnameErr = $emailErr = "";
         $error_response = array('status' => 'error', 'message' => 'Invalid JSON data received.');
         echo json_encode($error_response);
       }
+
+ $conn->close();
+ 
+//https://stackoverflow.com/questions/69207368/constant-filter-sanitize-string-is-deprecated/69207369
+  function filter_string_polyfill(string $string): string
+  {
+      $str = preg_replace('/\x00|<[^>]*>?/', '', $string);
+      return str_replace(["'", '"'], ['&#39;', '&#34;'], $str);
+  }

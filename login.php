@@ -2,10 +2,6 @@
 require("db_config.php");
 require ("headers.php");
 
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
-
        // 1. Get the raw JSON data from the request body
     $json_data = file_get_contents('php://input');
 
@@ -23,7 +19,7 @@ error_reporting(E_ALL);
        // $response = array('message' => 'Data received!', 'data' => $request_data);
         //var_dump($response);
 
-        if ($email !=null && $password !=null)
+        if ($email && $password !=null )
     {
         
         
@@ -81,7 +77,7 @@ error_reporting(E_ALL);
            echo json_encode(['status' => 'error', 'message' => 'User not found ' . $conn->error] );
         }
         
-        $conn->close(); 
+      
                   
 } else
       {
@@ -92,3 +88,4 @@ error_reporting(E_ALL);
       }
 
       }
+ $conn->close(); 

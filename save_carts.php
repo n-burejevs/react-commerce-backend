@@ -27,13 +27,6 @@ if ($request_data !== null)
            $wishlist_json = json_encode($wishlist);
             $cart_items_json = json_encode($cart_items);
         
-       /*  $conn = new mysqli($servername, $username, $db_password, $dbname);
-         
-        if ($conn->connect_error)
-        {   //Cant authenticate, error 
-         echo json_encode(['status' => "Error", 'message' => $conn->connect_error]);
-         exit();
-        } */
         
        $find_user_id = "SELECT id FROM users WHERE token = '$user_token'";
        
@@ -90,15 +83,10 @@ if ($request_data !== null)
             }
          }     
         
-        
        
                   //echo json_encode(['status'=> 'Error', 'message'=> 'sth went wrong']);
                  
         
-        
-
-        
-         $conn->close();
     }
     else 
     { //no request was sent?
@@ -112,4 +100,4 @@ if ($request_data !== null)
         $error_response = ['status' => 'Error', 'message' => "Bad Request"];
         echo json_encode($error_response);
       }
-     
+      $conn->close();

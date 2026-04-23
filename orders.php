@@ -143,20 +143,11 @@ function find_price_by_id($id, $products)
            //var_dump($item['id']);
            if($item['id'] == $id)
            {
-               //return $item['price'];
                return $item['price'];
            }
            
-        //if ($value->id == $id)
-      //  {
-        //     echo json_encode($value->price);
-           // return $value->price;
-       // }
     }
 
-  /* foreach ($products as $items) {
-        var_dump($items);
-   }    */
 }
 
 $conn->close();

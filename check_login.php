@@ -2,11 +2,6 @@
 require("db_config.php");
 require ("headers.php");
 
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
-
-
 $user_name = $user_lastname = $user_email = $user_id  = "";
 
 // 1. Get the raw JSON data from the request body
@@ -47,7 +42,7 @@ if ($request_data !== null)
               }
                echo json_encode(['status' => 'success', 'message' => 
                ['name' => $user_name,'email' => $user_email,'lastname' => $user_lastname,'id' => $user_id] ]);
-        $conn->close();         
+            
     }
     else 
     { //User was not yet logged in in this browser? No token?'
@@ -63,6 +58,7 @@ if ($request_data !== null)
         $error_response = ['status' => 'Error', 'message' => ''];
         echo json_encode($error_response);
       }
+ $conn->close();
 
 
   
