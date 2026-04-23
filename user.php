@@ -5,8 +5,10 @@ require ("headers.php");
 $method = $_SERVER['REQUEST_METHOD'];
 
 //send the user key values
-//posible reason for 2 emails, user might want to change email
 //to do: send user_parameters back
+
+//a while back some test task asked for an ability to add custom user attributes?
+//here is what they wanted???
     if ($method == 'GET')
 {   
     
