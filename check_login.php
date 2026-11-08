@@ -10,14 +10,14 @@ $json_data = file_get_contents('php://input');
 // 2. Decode the JSON data into a PHP associative array or object
 $request_data = json_decode($json_data, true); // 'true' for associative array, omit for object
 
-if ($request_data !== null) 
+if ($request_data) 
 {
+    //authentication token stored in cookies when user logs in
     $token = isset($request_data['token']) ? $request_data['token'] : null;
         
         
     if ($token !=null)
     {
-        
         
           //find the user
           $find_user = "SELECT * FROM users WHERE token = '$token'";

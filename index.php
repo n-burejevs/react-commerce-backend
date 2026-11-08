@@ -44,7 +44,7 @@ $nameErr = $lastnameErr = $emailErr = $passErr = "";
 
     if ($nameErr != "" || $lastnameErr != "" || $emailErr != "" || $passErr != "") {
         //there were errors
-      echo json_encode(['status' => 'error', 'message' =>  $emailErr+" "+$lastnameErr." "+$nameErr+" "+$passErr]);
+      echo json_encode(['status' => 'error', 'message' =>  $emailErr." ".$lastnameErr." ".$nameErr." ".$passErr]);
       exit();
     }
 
